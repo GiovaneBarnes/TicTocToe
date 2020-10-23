@@ -1,0 +1,141 @@
+gameBoard = ["_","_","_","_","_","_","_","_","_"]
+
+gameBoardDictionary = {"1a" : 0, "2a": 1, "3a": 2, "1b":3 , "2b": 4 , "3b": 5 , "1c": 6, "2c": 7 , "3c" : 8}
+
+user1NumberOfWins = 0;
+user2NumberOfWins = 0; 
+
+def stateOfBoard(): 
+    i = 0
+    print("\n")
+    for _ in range(3):
+      print(gameBoard[i], "  ", gameBoard[i+1], "  ", gameBoard[i+2])
+      print("\n")
+      i = i + 3
+
+def spaceAvailable(j):
+  if (j in gameBoardDictionary) == False:
+    print("Space non-existant. Try again")
+    return False;
+  if(gameBoard[gameBoardDictionary[j]] != "_"):
+    print("Space not available. Try again")
+    return False;
+  else:
+    return True
+
+def doWeHaveAWinner():
+  #Horizontal win 
+  #check row 1 
+  row = 0;
+  row1 = row
+  if (gameBoard[row1] != "_" and gameBoard[row1] == gameBoard[row1 + 1]) and gameBoard[row1] == gameBoard[row1+2]:
+    print("Winner on row 1")
+    return gameBoard[row1]
+  row += 3
+  #check row 2
+  row2 = row
+  if (gameBoard[row2] != "_" and gameBoard[row2] == gameBoard[row2 + 1]) and gameBoard[row2] == gameBoard[row2+2]:
+   print("Winner on row 2")
+   return gameBoard[row2]
+  row += 3
+  #check row 3
+  row3 = row
+  if (gameBoard[row3] != "_" and gameBoard[row3] == gameBoard[row3 + 1]) and gameBoard[row3] == gameBoard[row3+2]:
+   print("Winner on row 3")
+   return gameBoard[row3]
+  #column win 
+  #check column 1 
+  column = 0 
+  column1 = column
+  if (gameBoard[column1] != "_" and gameBoard[column1] == gameBoard[column1 + 3]) and gameBoard[column1] == gameBoard[column1 + 6]:
+    print("Winner on column 1")
+    return gameBoard[column1]
+  #check column 2 
+  column += 1
+  column2 = column
+  if (gameBoard[column2] != "_" and gameBoard[column2] == gameBoard[column2 + 3]) and gameBoard[column2] == gameBoard[column2 + 6]:
+    print("Winner on column 2")
+    return gameBoard[column2]
+  #check column 3
+  column += 1
+  column3 = column
+  if (gameBoard[column3] != "_" and gameBoard[column3] == gameBoard[column3 + 3]) and gameBoard[column3] == gameBoard[column3 + 6]:
+    print("Winner on column 3")
+    return gameBoard[column3]
+  #checks diagonal 1
+  diagonal1 = 0
+  if (gameBoard[diagonal1] != "_" and gameBoard[diagonal1] == gameBoard[diagonal1 + 4] ) and gameBoard[diagonal1] == gameBoard[diagonal1 + 8]:
+    print("Winner on diagonal1, going left to right")
+    return gameBoard[diagonal1]
+  #checks diagonal 2
+  diagonal2 = 2
+  if (gameBoard[diagonal2] != "_" and gameBoard[diagonal2] == gameBoard[diagonal2 + 2] ) and gameBoard[diagonal2] == gameBoard[diagonal2 + 4]:
+    print("Winner on diagonal2, going right to left")
+    return gameBoard[diagonal2]
+  else: 
+    return -1
+
+def clearBoard():
+  for i in range(9):
+    gameBoard[i] = "_"
+  print("You both have started a new game!" "Good luck!")
+  stateOfBoard()
+  innerMain(user1NumberOfWins, user2NumberOfWins, False)
+
+def gameOver():
+  print("The Game Is Over!")
+  quit()
+
+
+def mainProgram(): 
+  user1NumberOfWins = 0; 
+  user2NumberOfWins = 0;  
+  outcome = False 
+  innerMain(user1NumberOfWins, user2NumberOfWins,outcome)
+
+
+def innerMain(user1NumberOfWins, user2NumberOfWins,outcome):
+  while outcome == False: 
+    Player1input = input(userName1 + " enter a space \n \n")
+    while spaceAvailable(Player1input) == False:
+      Player1input = input("Refer to Dictionary \n")
+    gameBoard[gameBoardDictionary[Player1input]] = "X" 
+    stateOfBoard()
+    if doWeHaveAWinner() == "X":
+      print(userName1 + " has won")
+      user1NumberOfWins += 1
+      print(userName1 + " now has" , user1NumberOfWins, "win while", userName2 + " has" , user2NumberOfWins )
+      stateOfBoard()
+      newGame = input("Would you like to start a new game?Enter 'y' for yes or any other key for no ")
+      if newGame == "y" or newGame == "Y":
+        clearBoard()
+      else: 
+        gameOver()
+
+    Player2input = input(userName2 + " enter a space. \n \n")
+    while spaceAvailable(Player2input) == False:
+      Player1input = input("Refer to Dictionary \n")
+    gameBoard[gameBoardDictionary[Player2input]] = "O" 
+    stateOfBoard()
+    if doWeHaveAWinner() == "O":
+      print(userName2 + " has won")
+      user2NumberOfWins += 1
+      print(userName2 + " now has" , user2NumberOfWins, "win while", userName1 + " has" , user1NumberOfWins )
+      stateOfBoard()
+      newGame = input("Would you like to start a new game? Enter 'y' for yes or any other key for no ")
+      if newGame == "y" or newGame == "Y":
+        clearBoard()
+      else: 
+         gameOver()
+        
+
+
+
+
+stateOfBoard()
+
+userName1 = str(input("Player 1, please enter your name "))
+userName2 = str(input("Player 2, please enter your name "))
+
+mainProgram()
+
